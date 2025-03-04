@@ -1,0 +1,76 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
+plugins {
+    id 'org.springframework.boot' version '2.6.13'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'org.jetbrains.kotlin.jvm' version '1.6.21'
+    id 'org.jetbrains.kotlin.plugin.spring' version '1.6.21'
+    id 'war'
+}
+
+group = 'org.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+repositories{
+
+    maven { url 'https://maven.aliyun.com/repository/public/' }
+    mavenCentral()
+
+}
+
+dependencies {
+    // Spring Boot starters
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    implementation("org.springframework.boot:spring-boot-starter-amqp")
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    implementation("org.springframework.boot:spring-boot-starter-mail")
+    implementation 'mysql:mysql-connector-java:8.0.33'
+    testImplementation("org.mockito:mockito-core")
+    implementation 'com.baomidou:dynamic-datasource-spring-boot-starter:3.5.1'
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    // Jackson and Kotlin dependencies
+    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
+    implementation 'org.jetbrains.kotlin:kotlin-reflect'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+    // Lombok for compile-time code generation
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    implementation("org.springframework.security:spring-security-crypto")
+
+    // JPA starter
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // Redis and Lettuce for caching and Redis operations
+    implementation 'io.lettuce:lettuce-core'
+
+    // Tomcat starter for production
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+
+    // Test dependencies
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.withType(KotlinCompile) {
+    kotlinOptions {
+        freeCompilerArgs = ['-Xjsr305=strict']
+        jvmTarget = '1.8'
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
